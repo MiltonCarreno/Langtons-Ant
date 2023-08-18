@@ -84,6 +84,14 @@ impl LangtonsAnt {
             }
         };
     }
+
+    fn _change_cell_color(&mut self) {
+        if self.current_cell.2 {
+            self.current_cell.2 = false
+        } else {
+            self.current_cell.2 = true
+        }
+    }
 }
 
 fn get_board_size() -> usize {
