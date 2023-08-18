@@ -1,9 +1,13 @@
 use std::io::{self, Write};
-
+#[derive(Debug)]
+enum Direction {
+    North, South, West, East,
+}
 struct LangtonsAnt {
     board: Vec<Vec<char>>,
     size: usize,
-    coordinates: (usize, usize)
+    current_cell: (usize, usize, bool),
+    direction: Direction
 }
 
 impl LangtonsAnt {
@@ -17,7 +21,18 @@ impl LangtonsAnt {
             }
             board.push(v);
         }
-        return LangtonsAnt { board, size, coordinates };
+        let current_cell = (
+            coordinates.0,
+            coordinates.1,
+            true
+        );
+        let direction = Direction::North;
+        return LangtonsAnt { 
+            board,
+            size,
+            current_cell,
+            direction
+        };
     }
 
     fn print_board(&self) {
@@ -28,6 +43,8 @@ impl LangtonsAnt {
             println!("|{}|", row.iter().collect::<String>());
         }
         println!(" {}", border.iter().collect::<String>());
+        println!("Ant ({}, {}, {})",
+        self.current_cell.0, self.current_cell.1, self.current_cell.2);
     }
 }
 
@@ -69,7 +86,6 @@ fn get_ant_coordinates() -> (usize, usize) {
         vec_coordinates[1].parse::<usize>().unwrap()
     );
 }
-
 fn main() {
     // Obtain board size and ant's coordinates
     let size = get_board_size();
