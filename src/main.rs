@@ -53,6 +53,15 @@ fn main() {
 
     println!("\n--User input--\nBoard Size: {}\nCoordinates: {} {}",
     size, coordinates.0, coordinates.1);
+
+    // Construct Langton's Ant
+    let mut ant = LangtonsAnt {
+        board,
+        size,
+        coordinates
+    };
+
+    print_board(&ant);
 }
 
 fn create_board(size: usize, coordinates: (usize, usize)) -> Vec<Vec<char>> {
@@ -66,4 +75,14 @@ fn create_board(size: usize, coordinates: (usize, usize)) -> Vec<Vec<char>> {
         board.push(v);
     }
     return board;
+}
+
+fn print_board(ant: &LangtonsAnt) {
+    println!("\nPrinting Board!");
+    let border: Vec<char> = vec!['-'; ant.size];
+    println!(" {}", border.iter().collect::<String>());
+    for row in &ant.board {
+        println!("|{}|", row.iter().collect::<String>());
+    }
+    println!(" {}", border.iter().collect::<String>());
 }
