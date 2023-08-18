@@ -49,6 +49,21 @@ fn main() {
     // Obtain board size and ant's coordinates
     let size = get_board_size();
     let coordinates = get_ant_coordinates();
+    let board = create_board(size, coordinates);
 
-    println!("Size: {}, Coordinates: {} {}", size, coordinates.0, coordinates.1);
+    println!("\n--User input--\nBoard Size: {}\nCoordinates: {} {}",
+    size, coordinates.0, coordinates.1);
+}
+
+fn create_board(size: usize, coordinates: (usize, usize)) -> Vec<Vec<char>> {
+    println!("\nCreating Board!");
+    let mut board: Vec<Vec<char>> = Vec::new();
+    for row in 0..size {
+        let mut v: Vec<char> = vec![' '; size as usize];
+        if row == coordinates.0 {
+            v[coordinates.1] = '&';
+        }
+        board.push(v);
+    }
+    return board;
 }
