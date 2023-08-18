@@ -130,6 +130,27 @@ impl LangtonsAnt {
         }
         return (dest_row, dest_col);
     }
+
+    fn _move_forward(&mut self, dest_row: usize, dest_col: usize) {
+        let current_row = self.current_cell.0;
+        let current_col = self.current_cell.1;
+        // Assign appropiate color to current cell
+        if self.current_cell.2 {
+            self.board[current_row][current_col] = ' ';
+        } else {
+            self.board[current_row][current_col] = '*';
+        }
+        // Record destination color as current color
+        if self.board[dest_row][dest_col] == ' ' {
+            self.current_cell.2 = true;
+        } else {
+            self.current_cell.2 = false;
+        }
+        // Move ant to destination and record destination as current cell
+        self.board[dest_row][dest_col] = '&';
+        self.current_cell.0 = dest_row;
+        self.current_cell.1 = dest_col;
+    }
 }
 
 fn get_board_size() -> usize {
