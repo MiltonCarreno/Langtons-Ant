@@ -46,6 +46,44 @@ impl LangtonsAnt {
         println!("Ant ({}, {}, {})",
         self.current_cell.0, self.current_cell.1, self.current_cell.2);
     }
+
+    fn step(&mut self) {
+        self._turn();
+    }
+
+    fn _turn(&mut self) {
+        let cell_is_white = self.current_cell.2;
+        self.direction = match self.direction {
+            Direction::North => {
+                if cell_is_white {
+                    Direction::East
+                } else {
+                    Direction::West
+                }
+            },
+            Direction::East => {
+                if cell_is_white {
+                    Direction::South
+                } else {
+                    Direction::North
+                }
+            },
+            Direction::South => {
+                if cell_is_white {
+                    Direction::West
+                } else {
+                    Direction::East
+                }
+            },
+            Direction::West => {
+                if cell_is_white {
+                    Direction::North
+                } else {
+                    Direction::South
+                }
+            }
+        };
+    }
 }
 
 fn get_board_size() -> usize {
@@ -98,5 +136,8 @@ fn main() {
     let mut ant = LangtonsAnt::new(size, coordinates);
 
     // Print current state of board
+    ant.print_board();
+
+    ant.step();
     ant.print_board();
 }
