@@ -92,6 +92,44 @@ impl LangtonsAnt {
             self.current_cell.2 = true
         }
     }
+
+    fn _calculate_dest(&mut self) -> (usize, usize) {
+        // Calculate destination row and col
+        // Wrap around board if row or col exeed dimensions
+        let mut dest_row = self.current_cell.0;
+        let mut dest_col = self.current_cell.1;
+        match self.direction {
+            Direction::North => {
+                if dest_row == 0 {
+                    dest_row = self.size - 1;
+                } else {
+                    dest_row -= 1;
+                }
+            },
+            Direction::East => {
+                if dest_col == self.size - 1 {
+                    dest_col = 0;
+                } else {
+                    dest_col += 1;
+                }
+            },
+            Direction::South => {
+                if dest_row == self.size - 1 {
+                    dest_row = 0;
+                } else {
+                    dest_row += 1;
+                }
+            },
+            Direction::West => {
+                if dest_col == 0 {
+                    dest_col = self.size - 1;
+                } else {
+                    dest_col -= 1;
+                }
+            }
+        }
+        return (dest_row, dest_col);
+    }
 }
 
 fn get_board_size() -> usize {
