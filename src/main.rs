@@ -81,6 +81,6 @@ fn main() {
     // Construct Langton's Ant
     let mut ant = LangtonsAnt::new(size, coordinates);
 
-    // Print board
+    // Print current state of board
     ant.print_board();
 }
