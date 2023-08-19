@@ -49,6 +49,9 @@ impl LangtonsAnt {
 
     fn step(&mut self) {
         self._turn();
+        self._change_cell_color();
+        let (dest_row, dest_col) = self._calculate_dest();
+        self._move_forward(dest_row, dest_col);
     }
 
     fn _turn(&mut self) {
@@ -205,6 +208,8 @@ fn main() {
     // Print current state of board
     ant.print_board();
 
-    ant.step();
-    ant.print_board();
+    for _ in 0..15000 {
+        ant.step();
+        ant.print_board();
+    }
 }
