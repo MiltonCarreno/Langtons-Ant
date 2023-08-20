@@ -1,8 +1,13 @@
+extern crate ncurses;
+
 use std::io::{self, Write};
+use ncurses::*;
+
 #[derive(Debug)]
 enum Direction {
     North, South, West, East,
 }
+
 struct LangtonsAnt {
     board: Vec<Vec<char>>,
     size: usize,
@@ -35,16 +40,21 @@ impl LangtonsAnt {
         };
     }
 
-    fn print_board(&self) {
-        println!("\nPrinting Board!");
-        let border: Vec<char> = vec!['-'; self.size];
-        println!(" {}", border.iter().collect::<String>());
+    fn get_board(&self) -> String {
+        let border: Vec<char> = vec!['-'; self.size + 2];
+        let border: String = border.iter().collect::<String>() + "\n";
+        let mut board: String = String::new();
+        board.push_str(&border);
         for row in &self.board {
-            println!("|{}|", row.iter().collect::<String>());
+            board.push_str(&String::from("|"));
+            board.push_str(&row.iter().collect::<String>());
+            board.push_str(&String::from("|\n"));
         }
-        println!(" {}", border.iter().collect::<String>());
-        println!("Ant ({}, {}, {})",
+        board.push_str(&border);
+        let ant_location = format!("Ant ({}, {}, {})",
         self.current_cell.0, self.current_cell.1, self.current_cell.2);
+        board.push_str(&ant_location);
+        return board;
     }
 
     fn step(&mut self) {
@@ -194,6 +204,7 @@ fn get_ant_coordinates() -> (usize, usize) {
         vec_coordinates[1].parse::<usize>().unwrap()
     );
 }
+
 fn main() {
     // Obtain board size and ant's coordinates
     let size = get_board_size();
@@ -205,11 +216,22 @@ fn main() {
     // Construct Langton's Ant
     let mut ant = LangtonsAnt::new(size, coordinates);
 
-    // Print current state of board
-    ant.print_board();
+    // Start ncurses
+    initscr();
 
-    for _ in 0..15000 {
-        ant.step();
-        ant.print_board();
+    // Print board to window
+    let b = ant.get_board();
+    addstr(&b);
+
+    // Step and print board
+    for _ in 0..50000 {
+        erase(); // Erase last board
+        ant.step(); // Updated board
+        let b = ant.get_board(); // Get updated board
+        addstr(&b); // Print updated board
+        refresh(); // Refresh to show updated board
     }
+
+    // Terminate ncurses
+    endwin();
 }
